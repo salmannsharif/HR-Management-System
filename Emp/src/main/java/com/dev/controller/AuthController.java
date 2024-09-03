@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -55,7 +56,11 @@ public class AuthController {
             String token = tokenManager.generateToken((UserDetails) authentication.getPrincipal());
             String refreshToken = tokenManager.generateRefreshToken((UserDetails) authentication.getPrincipal());
 
-            return ResponseEntity.ok(Map.of("accessToken", token, "refreshToken", refreshToken));
+            Map<String, String> tokens = new HashMap<>();
+            tokens.put("accessToken", token);
+            tokens.put("refreshToken", refreshToken);
+
+            return ResponseEntity.ok(tokens);
         } catch (AuthenticationException e) {
             return new ResponseEntity<>("Invalid login credentials", HttpStatus.UNAUTHORIZED);
         }

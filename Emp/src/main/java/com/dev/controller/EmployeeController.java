@@ -26,7 +26,7 @@ public class EmployeeController {
             Employee createdEmployee = employeeService.addEmployee(employee);
             return new ResponseEntity<>(createdEmployee, HttpStatus.CREATED);
         } catch (EmployeeAlreadyExistsException | RoleNotFoundException | DepartmentNotFoundException e) {
-            return new ResponseEntity<>(null, HttpStatus.CONFLICT); // Conflict if employee already exists or required fields are missing
+            return new ResponseEntity<>(null, HttpStatus.CONFLICT);
         }
     }
 
