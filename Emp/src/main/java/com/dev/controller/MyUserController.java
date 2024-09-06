@@ -18,11 +18,15 @@ import java.util.List;
 @RequestMapping("/api/users")
 public class MyUserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    private final RoleRepository roleRepository;
 
     @Autowired
-    private RoleRepository roleRepository;
+    public MyUserController(UserService userService, RoleRepository roleRepository) {
+        this.userService = userService;
+        this.roleRepository = roleRepository;
+    }
 
     @PostMapping("/addUser")
     public ResponseEntity<MyUser> addUser(@RequestBody MyUser user) {

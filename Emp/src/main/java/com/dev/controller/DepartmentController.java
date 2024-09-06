@@ -14,8 +14,12 @@ import java.util.List;
 @RequestMapping("/api/departments")
 public class DepartmentController {
 
+    private final DepartmentService departmentService;
+
     @Autowired
-    private DepartmentService departmentService;
+    public DepartmentController(DepartmentService departmentService) {
+        this.departmentService = departmentService;
+    }
 
     @PostMapping("/addDepartment")
     public ResponseEntity<Department> addDepartment(@RequestBody Department department) {

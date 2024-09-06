@@ -24,20 +24,23 @@ import java.util.Map;
 @RequestMapping("/auth")
 public class AuthController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    private final AuthenticationManager authenticateManager;
+
+    private final TokenManager tokenManager;
 
     @Autowired
-    private AuthenticationManager authenticateManager;
-
-    @Autowired
-    private TokenManager tokenManager;
+    public AuthController(UserService userService, AuthenticationManager authenticationManager, TokenManager tokenManager) {
+        this.userService = userService;
+        this.authenticateManager = authenticationManager;
+        this.tokenManager = tokenManager;
+    }
 
     @PostMapping("/signup")
     public ResponseEntity<MyUser> createUser(@RequestBody MyUser user) {
         try {
             MyUser createdUser = userService.addUser(user);
-            System.out.println(createdUser);
             return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
         } catch (UserAlreadyExistException e) {
             return new ResponseEntity<>(null, HttpStatus.CONFLICT);

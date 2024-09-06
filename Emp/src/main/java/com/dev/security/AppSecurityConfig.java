@@ -21,14 +21,15 @@ import org.springframework.security.web.authentication.logout.HttpStatusReturnin
 @EnableWebSecurity
 public class AppSecurityConfig {
 
-    @Autowired
-    private MyUserDetailService myUserDetailService;
+    private final MyUserDetailService myUserDetailService;
+
+    private final JwtFilter jwtFilter;
 
     @Autowired
-    private TokenManager tokenManager;
-
-    @Autowired
-    private JwtFilter jwtFilter;
+    public AppSecurityConfig(JwtFilter jwtFilter, MyUserDetailService myUserDetailService) {
+        this.jwtFilter = jwtFilter;
+        this.myUserDetailService = myUserDetailService;
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {

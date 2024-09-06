@@ -14,8 +14,12 @@ import java.util.List;
 @RequestMapping("/api/salary")
 public class SalaryController {
 
+    private final SalaryService salaryService;
+
     @Autowired
-    private SalaryService salaryService;
+    public SalaryController(SalaryService salaryService) {
+        this.salaryService = salaryService;
+    }
 
     @PostMapping("/add")
     public Salary addSalary(@RequestParam long id, @RequestParam double amount) {

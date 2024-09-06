@@ -12,13 +12,12 @@ import java.security.Key;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Component
 public class TokenManager {
 
-    private final long REFRESH_TOKEN_EXPIRATION = 1000L * 60 * 4; // 4 minutes
-    private final long EXPIRATION_DATE = 1000L * 60 * 2; // 2 minutes
+    private static final long REFRESH_TOKEN_EXPIRATION = 1000L * 60 * 4; // 4 minutes
+    private static final long EXPIRATION_DATE = 1000L * 60 * 2; // 2 minutes
 
     @Value("${jwt.secret}")
     private String jwtSecret;
@@ -26,7 +25,7 @@ public class TokenManager {
     public String generateToken(UserDetails userDetails) {
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toList());
+                .toList();
 
         Map<String, Object> claims = Map.of("roles", roles);
 
@@ -51,9 +50,14 @@ public class TokenManager {
 
 
     public String extractUsername(String token) {
-        return Jwts.parser().setSigningKey(getSignKey()).build()
-                .parseClaimsJws(token).getBody().getSubject();
+        return Jwts.parserBuilder()
+                .setSigningKey(getSignKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
     }
+
 
     public boolean isValidToken(String token, UserDetails userDetails) {
         String username = extractUsername(token);
@@ -61,9 +65,15 @@ public class TokenManager {
     }
 
     public boolean isTokenExpired(String token) {
-        return Jwts.parser().setSigningKey(getSignKey()).build()
-                .parseClaimsJws(token).getBody().getExpiration().before(new Date(System.currentTimeMillis()));
+        return Jwts.parserBuilder()
+                .setSigningKey(getSignKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getExpiration()
+                .before(new Date(System.currentTimeMillis()));
     }
+
 
     private Key getSignKey() {
         byte[] keyBytes = Decoders.BASE64.decode(jwtSecret);

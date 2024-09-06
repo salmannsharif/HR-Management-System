@@ -11,16 +11,19 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class SalaryServiceImpl implements SalaryService {
 
-    @Autowired
-    private EmployeeRepository employeeRepository;
+    private final EmployeeRepository employeeRepository;
+
+    private final SalaryRepository salaryRepository;
 
     @Autowired
-    private SalaryRepository salaryRepository;
+    public SalaryServiceImpl(EmployeeRepository employeeRepository, SalaryRepository salaryRepository) {
+        this.employeeRepository = employeeRepository;
+        this.salaryRepository = salaryRepository;
+    }
 
     @Override
     public Salary addSalary(long id, double amount) {
@@ -36,7 +39,7 @@ public class SalaryServiceImpl implements SalaryService {
 
     @Override
     public List<Salary> bulkAddSalaries(long[] ids, double amount) {
-        List<Long> idList = Arrays.stream(ids).boxed().collect(Collectors.toList());
+        List<Long> idList = Arrays.stream(ids).boxed().toList();
         List<Employee> employees = employeeRepository.findAllById(idList);
 
         List<Salary> salaries = employees.stream().map(employee -> {
@@ -44,7 +47,7 @@ public class SalaryServiceImpl implements SalaryService {
             salary.setAmount(amount);
             salary.setEmployee(employee);
             return salary;
-        }).collect(Collectors.toList());
+        }).toList();
 
         return salaryRepository.saveAll(salaries);
     }

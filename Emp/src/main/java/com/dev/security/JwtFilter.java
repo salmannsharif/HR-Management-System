@@ -20,11 +20,15 @@ import java.io.IOException;
 @Component
 public class JwtFilter extends OncePerRequestFilter {
 
-    @Autowired
-    private MyUserDetailService userDetailsService;
+    private final MyUserDetailService userDetailsService;
+
+    private final TokenManager tokenManager;
 
     @Autowired
-    private TokenManager tokenManager;
+    public JwtFilter(MyUserDetailService userDetailsService, TokenManager tokenManager) {
+        this.userDetailsService = userDetailsService;
+        this.tokenManager = tokenManager;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,

@@ -17,11 +17,16 @@ import java.util.Optional;
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
-    @Autowired
-    private EmployeeRepository employeeRepository;
+    private final EmployeeRepository employeeRepository;
+
+    private final DepartmentRepository departmentRepository;
 
     @Autowired
-    private DepartmentRepository departmentRepository;
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository, DepartmentRepository department){
+        this.employeeRepository = employeeRepository;
+        this.departmentRepository = department;
+    }
+
 
     @Override
     public Employee addEmployee(Employee employee) {

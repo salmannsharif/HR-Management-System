@@ -22,17 +22,23 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private MyUserRepository userRepository;
+    private final MyUserRepository userRepository;
+
+    private final RoleRepository roleRepository;
+
+    private final DepartmentRepository departmentRepository;
+
+    private final PasswordEncoder passwordEncoder;
+
+    private static final String USER_NOT_FOUND = "USER NOT FOUND";
 
     @Autowired
-    private RoleRepository roleRepository;
-
-    @Autowired
-    private DepartmentRepository departmentRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    public UserServiceImpl(MyUserRepository userRepository, RoleRepository roleRepository, DepartmentRepository departmentRepository, PasswordEncoder passwordEncoder){
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.departmentRepository = departmentRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Transactional
     @Override
@@ -63,7 +69,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public MyUser getUser(long userId) {
         return userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("User not found with id " + userId));
+                .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND +" "+ userId));
     }
 
     @Override
@@ -74,7 +80,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(long userId) {
         if (!userRepository.existsById(userId)) {
-            throw new UserNotFoundException("User not found with id " + userId);
+            throw new UserNotFoundException(USER_NOT_FOUND +" "+ userId);
         }
         userRepository.deleteById(userId);
     }
@@ -83,7 +89,7 @@ public class UserServiceImpl implements UserService {
     public MyUser updateUser(MyUser user) {
         Optional<MyUser> userOptional = userRepository.findById(user.getId());
         if (!userOptional.isPresent()) {
-            throw new UserNotFoundException("User not found with id " + user.getId());
+            throw new UserNotFoundException(USER_NOT_FOUND+" "+user.getId());
         }
 
         MyUser existingUser = userOptional.get();
@@ -108,14 +114,14 @@ public class UserServiceImpl implements UserService {
         if (user.isPresent()) {
             return user.get();
         } else {
-            throw new UserNotFoundException("User not found with username: " + username);
+            throw new UserNotFoundException(USER_NOT_FOUND+" "+username);
         }
     }
 
     @Override
     public MyUser getUserByEmail(String email) {
         return userRepository.findUserByEmail(email)
-                .orElseThrow(() -> new UserNotFoundException("User with " + email + " not found"));
+                .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND + " " + email));
     }
 
     @Override
