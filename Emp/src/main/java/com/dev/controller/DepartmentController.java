@@ -27,7 +27,7 @@ public class DepartmentController {
             Department createdDepartment = departmentService.addDepartment(department);
             return new ResponseEntity<>(createdDepartment, HttpStatus.CREATED);
         } catch (DepartmentNotFoundException e) {
-            return new ResponseEntity<>(null, HttpStatus.CONFLICT);
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
     }
 
@@ -37,7 +37,7 @@ public class DepartmentController {
             Department department = departmentService.getDepartmentById(id);
             return new ResponseEntity<>(department, HttpStatus.OK);
         } catch (DepartmentNotFoundException e) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
@@ -47,7 +47,7 @@ public class DepartmentController {
             Department department = departmentService.getDepartmentByName(name);
             return new ResponseEntity<>(department, HttpStatus.OK);
         } catch (DepartmentNotFoundException e) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 

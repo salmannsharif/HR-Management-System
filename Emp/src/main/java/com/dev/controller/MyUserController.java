@@ -34,9 +34,9 @@ public class MyUserController {
             MyUser createdUser = userService.addUser(user);
             return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
         } catch (UserAlreadyExistException e) {
-            return new ResponseEntity<>(null, HttpStatus.CONFLICT);
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         } catch (RuntimeException e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -46,7 +46,7 @@ public class MyUserController {
             MyUser user = userService.getUser(userId);
             return new ResponseEntity<>(user, HttpStatus.OK);
         } catch (RoleNotFoundException e) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
@@ -72,7 +72,7 @@ public class MyUserController {
             MyUser updatedUser = userService.updateUser(user);
             return new ResponseEntity<>(updatedUser, HttpStatus.OK);
         } catch (UserNotFoundException e) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
@@ -82,7 +82,7 @@ public class MyUserController {
             MyUser user = userService.getUserByUsername(username);
             return new ResponseEntity<>(user, HttpStatus.OK);
         } catch (UserNotFoundException e) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
@@ -92,7 +92,7 @@ public class MyUserController {
             MyUser user = userService.getUserByEmail(email);
             return new ResponseEntity<>(user, HttpStatus.OK);
         } catch (UserNotFoundException e) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
@@ -111,7 +111,7 @@ public class MyUserController {
             List<MyUser> users = userService.getUserByRole(role);
             return new ResponseEntity<>(users, HttpStatus.OK);
         } catch (RoleNotFoundException e) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
@@ -121,7 +121,7 @@ public class MyUserController {
             List<MyUser> users = userService.getUserByDepartment(department);
             return new ResponseEntity<>(users, HttpStatus.OK);
         } catch (UserNotFoundException e) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 }

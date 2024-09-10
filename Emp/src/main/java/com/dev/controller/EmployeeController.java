@@ -21,7 +21,7 @@ public class EmployeeController {
     private final EmployeeService employeeService;
 
     @Autowired
-    public EmployeeController(EmployeeService employeeService){
+    public EmployeeController(EmployeeService employeeService) {
         this.employeeService = employeeService;
     }
 
@@ -31,7 +31,7 @@ public class EmployeeController {
             Employee createdEmployee = employeeService.addEmployee(employee);
             return new ResponseEntity<>(createdEmployee, HttpStatus.CREATED);
         } catch (EmployeeAlreadyExistsException | RoleNotFoundException | DepartmentNotFoundException e) {
-            return new ResponseEntity<>(null, HttpStatus.CONFLICT);
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
     }
 
@@ -41,7 +41,7 @@ public class EmployeeController {
             Employee employee = employeeService.getEmployeeById(id);
             return new ResponseEntity<>(employee, HttpStatus.OK);
         } catch (EmployeeNotFoundException e) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
@@ -51,7 +51,7 @@ public class EmployeeController {
             Employee employee = employeeService.getEmployeeByName(firstName, lastName);
             return new ResponseEntity<>(employee, HttpStatus.OK);
         } catch (EmployeeNotFoundException e) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
@@ -61,7 +61,7 @@ public class EmployeeController {
             Employee employee = employeeService.getEmployeeByEmail(email);
             return new ResponseEntity<>(employee, HttpStatus.OK);
         } catch (EmployeeNotFoundException e) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
@@ -71,7 +71,7 @@ public class EmployeeController {
             Employee employee = employeeService.getEmployeeByPhone(phoneNumber);
             return new ResponseEntity<>(employee, HttpStatus.OK);
         } catch (EmployeeNotFoundException e) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
@@ -87,7 +87,7 @@ public class EmployeeController {
             Employee updatedEmployee = employeeService.createOrUpdateEmployee(employee);
             return new ResponseEntity<>(updatedEmployee, HttpStatus.OK);
         } catch (EmployeeNotFoundException | RoleNotFoundException | DepartmentNotFoundException e) {
-            return new ResponseEntity<>(null, HttpStatus.CONFLICT);
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
     }
 
@@ -113,7 +113,7 @@ public class EmployeeController {
             List<Employee> employees = employeeService.findEmployeeByDepartment(departmentName);
             return new ResponseEntity<>(employees, HttpStatus.OK);
         } catch (DepartmentNotFoundException e) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 }
